@@ -8,28 +8,19 @@ router.post("/signup", async (req, res) => {
     console.log("STEP 1: Body", req.body);
 
     const { name, email, password } = req.body;
-
-    console.log("STEP 2: Before DB check");
     const existing = await User.findOne({ email });
 
-    console.log("STEP 3: After DB check");
     if (existing) {
       console.log("User already exists");
       return res.status(400).json({ error: "Email already exists" });
     }
 
-    console.log("STEP 4: Before hashing");
     const hashed = await bcrypt.hash(password, 10);
-
-    console.log("STEP 5: After hashing");
-
     const user = await User.create({
       name,
       email,
       password: hashed,
     });
-
-    console.log("STEP 6: User created");
 
     const token = jwt.sign(
       { id: user._id },
@@ -37,12 +28,10 @@ router.post("/signup", async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    console.log("STEP 7: Token created");
-
     res.json({ token });
 
   } catch (err) {
-    console.error("🔥 ERROR:", err);
+    console.error("ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 });
