@@ -3,13 +3,48 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// Signup
 router.post("/signup", async (req, res) => {
-  const { username, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = new User({ username, email, password: hashedPassword });
-  await user.save();
-  res.status(201).json({ message: "User created" });
+  try {
+    console.log("STEP 1: Body", req.body);
+
+    const { name, email, password } = req.body;
+
+    console.log("STEP 2: Before DB check");
+    const existing = await User.findOne({ email });
+
+    console.log("STEP 3: After DB check");
+    if (existing) {
+      console.log("User already exists");
+      return res.status(400).json({ error: "Email already exists" });
+    }
+
+    console.log("STEP 4: Before hashing");
+    const hashed = await bcrypt.hash(password, 10);
+
+    console.log("STEP 5: After hashing");
+
+    const user = await User.create({
+      name,
+      email,
+      password: hashed,
+    });
+
+    console.log("STEP 6: User created");
+
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    console.log("STEP 7: Token created");
+
+    res.json({ token });
+
+  } catch (err) {
+    console.error("🔥 ERROR:", err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Login
