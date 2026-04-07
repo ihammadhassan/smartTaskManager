@@ -44,7 +44,23 @@ router.post("/login", async (req, res) => {
   const valid = await bcrypt.compare(password, user.password);
   if(!valid) return res.status(400).json({ error: "Invalid password" });
   const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-  res.json({ token });
+  res.json({ userId: user._id, token });
+});
+
+// Update User Profile
+router.put("/v1/updateProfile", async (req, res) => {
+  const {userId, name} = req.body;
+  const user = await User.findByIdAndUpdate(userId, {$set: {name: name}}, { returnDocument: 'after' });
+  if (!user) return res.status(400).json({error: "User not found"});
+  res.json({status: 200, user});
+});
+
+// Get User ID
+router.post("/getId", async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if(!user) return res.status(400).json({ error: "User not found" });
+  res.json({ status: "200", userId: user._id });
 });
 
 module.exports = router;
