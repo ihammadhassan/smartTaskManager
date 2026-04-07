@@ -10,7 +10,7 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newTask = { title, description, priority, deadline };
-    const res = await API.post("/tasks", newTask);
+    const res = await API.post("/tasks/v1/createTask", newTask);
     onTaskAdded(res.data);
     // Reset form
     setTitle(""); setDescription(""); setPriority("Low"); setDeadline("");
@@ -24,7 +24,7 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
       position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
       background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center"
     }}>
-      <form onSubmit={handleSubmit} style={{ background: "#fff", padding: "20px", borderRadius: "8px", width: "400px" }}>
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", background: "#fff", padding: "20px", borderRadius: "8px", width: "400px" }}>
         <h3>Add Task</h3>
         <input placeholder="Title" value={title} onChange={e=>setTitle(e.target.value)} required />
         <textarea placeholder="Description" value={description} onChange={e=>setDescription(e.target.value)} />
@@ -35,8 +35,8 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
         </select>
         <input type="date" value={deadline} onChange={e=>setDeadline(e.target.value)} required />
         <div style={{ marginTop: "10px", display: "flex", justifyContent: "space-between" }}>
-          <button type="submit">Add</button>
           <button type="button" onClick={onClose}>Cancel</button>
+          <button type="submit" style={{ padding: "10px", backgroundColor: "#4CAF50", color: "#fff", border: "none", borderRadius: "5px" }}>Add Task</button>
         </div>
       </form>
     </div>

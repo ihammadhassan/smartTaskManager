@@ -11,7 +11,7 @@ export default function TaskList({ onLogout }) {
   const [recommended, setRecommended] = useState([]);
 
   useEffect(() => {
-    API.get("/tasks").then(res => {
+    API.get("/tasks/v1/").then(res => {
       setTasks(res.data);
       updateRecommended(res.data);
     });

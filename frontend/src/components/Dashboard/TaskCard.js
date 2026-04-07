@@ -6,7 +6,7 @@ export default function TaskCard({ task, onEdit, onDelete }) {
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this task?")) {
-      await API.delete(`/tasks/${task._id}`);
+      await API.delete(`/tasks/v1/deleteTask${task._id}`);
       onDelete(task._id);
     }
   };
