@@ -72,7 +72,7 @@ export default function Signup() {
           required
         />
 
-        <button type="submit" disabled={loading} style={{ padding: "10px", backgroundColor: "#4CAF50", color: "#fff", border: "none", borderRadius: "5px" }}>
+        <button type="submit" disabled={loading} class="primary-btn">
           {loading ? "Signing up..." : "Sign Up"}
         </button>
       </form>

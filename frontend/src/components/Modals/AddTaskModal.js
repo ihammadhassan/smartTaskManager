@@ -36,7 +36,7 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
         <input type="date" value={deadline} onChange={e=>setDeadline(e.target.value)} required />
         <div style={{ marginTop: "10px", display: "flex", justifyContent: "space-between" }}>
           <button type="button" onClick={onClose}>Cancel</button>
-          <button type="submit" style={{ padding: "10px", backgroundColor: "#4CAF50", color: "#fff", border: "none", borderRadius: "5px" }}>Add Task</button>
+          <button type="submit" class = "primary-btn">Add Task</button>
         </div>
       </form>
     </div>
