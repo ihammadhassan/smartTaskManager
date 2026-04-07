@@ -5,3 +5,11 @@
 	border: none;
 	border-radius: 5px;
 }
+
+.secondary-btn {
+	background-color: #ebe9f1;
+	color: #f2071e;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+}

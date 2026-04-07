@@ -45,7 +45,7 @@ export default function TaskList({ onLogout }) {
     <div style={{padding: "12px 36px"}}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h2>Dashboard</h2>
-        <button onClick={onLogout} style={{ background: "red", color: "#fff", padding: "5px 10px" }}>Logout</button>
+        <button onClick={onLogout} class = "secondary-btn">Logout</button>
       </div>
 
       <button onClick={() => setIsAddOpen(true)} class = "primary-btn">Add Task</button>
