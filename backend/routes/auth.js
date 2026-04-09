@@ -2,12 +2,13 @@ const router = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const auth = require ("../middleware/auth");
 
 router.post("/signup", async (req, res) => {
   try {
     console.log("STEP 1: Body", req.body);
 
-    const { name, email, password } = req.body;
+    const { name, email, profileBio, password } = req.body;
     const existing = await User.findOne({ email });
 
     if (existing) {
@@ -19,6 +20,7 @@ router.post("/signup", async (req, res) => {
     const user = await User.create({
       name,
       email,
+      profileBio,
       password: hashed,
     });
 
@@ -48,9 +50,9 @@ router.post("/login", async (req, res) => {
 });
 
 // Update User Profile
-router.put("/v1/updateProfile", async (req, res) => {
-  const {userId, name} = req.body;
-  const user = await User.findByIdAndUpdate(userId, {$set: {name: name}}, { returnDocument: 'after' });
+router.put("/v1/updateProfile", auth, async (req, res) => {
+  //const {name, profileBio} = req.body;
+  const user = await User.findByIdAndUpdate(req.user.userId, {$set: req.body}, { returnDocument: 'after' });
   if (!user) return res.status(400).json({error: "User not found"});
   res.json({status: 200, user});
 });
