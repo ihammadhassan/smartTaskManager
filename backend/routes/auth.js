@@ -51,18 +51,9 @@ router.post("/login", async (req, res) => {
 
 // Update User Profile
 router.put("/v1/updateProfile", auth, async (req, res) => {
-  //const {name, profileBio} = req.body;
   const user = await User.findByIdAndUpdate(req.user.userId, {$set: req.body}, { returnDocument: 'after' });
   if (!user) return res.status(400).json({error: "User not found"});
   res.json({status: 200, user});
-});
-
-// Get User ID
-router.post("/getId", async (req, res) => {
-  const { email } = req.body;
-  const user = await User.findOne({ email });
-  if(!user) return res.status(400).json({ error: "User not found" });
-  res.json({ status: "200", userId: user._id });
 });
 
 module.exports = router;
